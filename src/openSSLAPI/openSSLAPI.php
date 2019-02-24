@@ -8,12 +8,46 @@ class openSSLAPI
 {
 
     /**
+     * openSSLAPI constructor.
+     */
+
+    public function __construct() {
+        try {
+            if (!$this->checkopenSSLenabled()) {
+                throw new PHPCryptoAPIException();
+            }
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die('openSSL extension is not enabled!');
+        }
+    }
+
+    /**
+     * @return bool
+     */
+
+    private function checkopenSSLenabled(): bool {
+        if (!extension_loaded('openssl')) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * @param int $length
      * @return string
      */
 
     public function generateKey(int $length): string {
         return openssl_random_pseudo_bytes($length/8);
+    }
+
+    /**
+     * @param string $algorithm
+     * @return string
+     */
+
+    public function generateIv(string $algorithm): string {
+        return openssl_random_pseudo_bytes(openssl_cipher_iv_length($algorithm));
     }
 
     /**
@@ -25,7 +59,7 @@ class openSSLAPI
      * @param bool $encode
      * @return object
      */
-    public function openSSLAESencrypt(string $data, int $length, string $mode, string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLAESencrypt(string $data, string $mode='CBC', int $length=256, string $key=null, string $iv=null, bool $encode=false): object {
         try {
             $algorithm = "AES-" . (string)$length . "-" . strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -35,34 +69,35 @@ class openSSLAPI
                 $key = $this->generateKey($length);
             }
             if (!$iv) {
-                $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($algorithm));
+                $iv = $this->generateIv($algorithm);
             }
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
-                echo "An error occurred in PHPCryptoLib! -> ".openssl_error_string();
-                die;
+                throw new PHPCryptoAPIException(openssl_error_string());
             }
             if ($encode) {
                 $cipher = base64_encode($cipher);
             }
             return new openSSLReturn($cipher, $key, $iv, $algorithm);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            echo "An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage();
-            die;
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
     }
 
     /**
      * @param string $data
      * @param string $mode
+     * @param int $length
      * @param string|null $key
      * @param string|null $iv
      * @param bool|false $encoded
      * @return object
      */
 
-    public function openSSLBFencrypt(string $data, string $mode, string $key=null, string $iv=null, bool $encoded=false): object {
+    public function openSSLBFencrypt(string $data, string $mode='CBC', int $length=448, string $key=null, string $iv=null, bool $encoded=false): object {
         try {
-            $length = 448;
+            if ($length < 32 || $length > 448) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)$length);
+            }
             $algorithm = "BF-".strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
                 throw new PHPCryptoAPIException('Unknown algorithm "' . $algorithm . '"');
@@ -71,19 +106,88 @@ class openSSLAPI
                 $key = $this->generateKey($length);
             }
             if (!$iv) {
-                $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($algorithm));
+                $iv = $this->generateIv($algorithm);
             }
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
-                echo "An error occurred in PHPCryptoLib! -> ".openssl_error_string();
-                die;
+                throw new PHPCryptoAPIException(openssl_error_string());
             }
             if ($encoded) {
                 $cipher = base64_encode($cipher);
             }
             return new openSSLReturn($cipher, $key, $iv, $algorithm);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            echo "An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage();
-            die;
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $mode
+     * @param int $length
+     * @param string|null $key
+     * @param string|null $iv
+     * @param bool $encoded
+     * @return object
+     */
+
+    public function openSSLCast5encrypt(string $data, string $mode='CBC', int $length=128, string $key=null, string $iv=null, bool $encoded=false): object {
+        try {
+            $algorithm = 'CAST5-'.strtoupper($mode);
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm "' . $algorithm . '"');
+            }
+            if ($length < 40 || $length > 128) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)$length);
+            }
+            if (!$key) {
+                $key = $this->generateKey($length);
+            }
+            if (!$iv) {
+                $iv = $this->generateIv($algorithm);
+            }
+            if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            if ($encoded) {
+                $cipher = base64_encode($cipher);
+            }
+            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $mode
+     * @param string|null $key
+     * @param string|null $iv
+     * @param bool $encoded
+     * @return object
+     */
+
+    public function openSSLIDEAencryption(string $data, string $mode, string $key=null, string $iv=null, bool $encoded=false): object {
+        try {
+            $length = 128;
+            $algorithm = 'IDEA-'.strtoupper($mode);
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm "' . $algorithm . '"');
+            }
+            if (!$key) {
+                $key = $this->generateKey($length);
+            }
+            if (!$iv) {
+                $iv = $this->generateIv($algorithm);
+            }
+            if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            if ($encoded) {
+                $cipher = base64_encode($cipher);
+            }
+            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
     }
 

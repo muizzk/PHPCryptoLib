@@ -6,10 +6,19 @@ use LLJVCS\PHPCryptoLib\openSSLAPI\openSSLAPI;
 
 $api = new openSSLAPI();
 
-$cipher = $api->openSSLAESencrypt('Hello World!', 256, 'CBC', null, null, true);
+$cipher = $api->openSSLAESencrypt('Hello World!', 'CBC', 256, null, null, true);
 
-echo $cipher->getData().PHP_EOL;
+echo "AES: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLBFencrypt('Hello World!', 'CBC', null, null, true);
+$cipher = $api->openSSLBFencrypt('Hello World!', 'CBC', 448,null, null, true);
 
-echo $cipher->getData();
+echo "Blowfish: ".$cipher->getData().PHP_EOL;
+
+$cipher = $api->openSSLCast5encrypt('Hello World!', 'CBC', 128, null, null, true);
+
+echo "Cast5: ".$cipher->getData().PHP_EOL;
+
+$cipher = $api->openSSLIDEAencryption('Hello World!', 'CBC', null, null, true);
+
+echo "IDEA: ".$cipher->getData().PHP_EOL;
+

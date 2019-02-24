@@ -1,8 +1,9 @@
 <?php
 
 namespace LLJVCS\PHPCryptoLib\returnObjects\openSSLAESReturn;
+use LLJVCS\PHPCryptoLib\Interfaces\openSSLReturn as openSSLReturnInterface;
 
-class openSSLReturn
+class openSSLReturn implements openSSLReturnInterface
 {
 
     public $data;

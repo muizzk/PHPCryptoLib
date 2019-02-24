@@ -2,9 +2,10 @@
 
 namespace LLJVCS\PHPCryptoLib\openSSLAPI;
 use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
+use LLJVCS\PHPCryptoLib\Interfaces\openSSLAPI as openSSLAPIInterface;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLAESReturn\openSSLReturn;
 
-class openSSLAPI
+class openSSLAPI implements openSSLAPIInterface
 {
 
     /**
@@ -59,7 +60,7 @@ class openSSLAPI
      * @param bool $encode
      * @return object
      */
-    public function openSSLAESencrypt(string $data, string $mode='CBC', int $length=256, string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLAESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null, bool $encode=false): object {
         try {
             $algorithm = "AES-" . (string)$length . "-" . strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -85,15 +86,40 @@ class openSSLAPI
 
     /**
      * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @return object
+     */
+
+    public function openSSLAESdecrypt(string $data, string $key, string $iv, string $algorithm): object {
+        try {
+            if ($key === '' || ctype_space($key)) {
+                throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
+            }
+            if (!in_array(strlen($key)*8, array(128, 192, 256))) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            return new openSSLReturn($clear, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
      * @param string $mode
      * @param int $length
      * @param string|null $key
      * @param string|null $iv
-     * @param bool|false $encoded
+     * @param bool|false $encode
      * @return object
      */
 
-    public function openSSLBFencrypt(string $data, string $mode='CBC', int $length=448, string $key=null, string $iv=null, bool $encoded=false): object {
+    public function openSSLBFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null, bool $encode=false): object {
         try {
             if ($length < 32 || $length > 448) {
                 throw new PHPCryptoAPIException('Invalid Key Size '.(string)$length);
@@ -111,10 +137,36 @@ class openSSLAPI
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encoded) {
+            if ($encode) {
                 $cipher = base64_encode($cipher);
             }
             return new openSSLReturn($cipher, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @return object
+     */
+
+    public function openSSLBFdecrypt(string $data, string $key, string $iv, string $algorithm): object {
+        try {
+            if ($key === '' || ctype_space($key)) {
+                throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
+            }
+            $length = strlen($key)*8;
+            if ($length < 32 || $length > 448) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            return new openSSLReturn($clear, $key, $iv, $algorithm);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -126,11 +178,11 @@ class openSSLAPI
      * @param int $length
      * @param string|null $key
      * @param string|null $iv
-     * @param bool $encoded
+     * @param bool $encode
      * @return object
      */
 
-    public function openSSLCast5encrypt(string $data, string $mode='CBC', int $length=128, string $key=null, string $iv=null, bool $encoded=false): object {
+    public function openSSLCast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null, bool $encode=false): object {
         try {
             $algorithm = 'CAST5-'.strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -148,7 +200,7 @@ class openSSLAPI
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encoded) {
+            if ($encode) {
                 $cipher = base64_encode($cipher);
             }
             return new openSSLReturn($cipher, $key, $iv, $algorithm);
@@ -159,14 +211,40 @@ class openSSLAPI
 
     /**
      * @param string $data
-     * @param string $mode
-     * @param string|null $key
-     * @param string|null $iv
-     * @param bool $encoded
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
      * @return object
      */
 
-    public function openSSLIDEAencryption(string $data, string $mode, string $key=null, string $iv=null, bool $encoded=false): object {
+    public function openSSLCast5decrypt(string $data, string $key, string $iv, string $algorithm): object {
+        try {
+            if ($key === '' || ctype_space($key)) {
+                throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
+            }
+            $length = strlen($key)*8;
+            if ($length < 40 || $length > 128) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            return new openSSLReturn($clear, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $mode
+     * @param string|null $key
+     * @param string|null $iv
+     * @param bool $encode
+     * @return object
+     */
+
+    public function openSSLIDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null, bool $encode=false): object {
         try {
             $length = 128;
             $algorithm = 'IDEA-'.strtoupper($mode);
@@ -182,10 +260,35 @@ class openSSLAPI
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encoded) {
+            if ($encode) {
                 $cipher = base64_encode($cipher);
             }
             return new openSSLReturn($cipher, $key, $iv, $algorithm);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @return object
+     */
+
+    public function openSSLIDEAdecrypt(string $data, string $key, string $iv, string $algorithm): object {
+        try {
+            if ($key === '' || ctype_space($key)) {
+                throw new PHPCryptoAPIException('Key can\'t be empty or whitespace!');
+            }
+            if (strlen($key)*8 !== 128) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            return new openSSLReturn($clear, $key, $iv, $algorithm);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }

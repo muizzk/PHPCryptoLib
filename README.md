@@ -21,14 +21,14 @@ A blueprint of the function with its parameters:
 
 ``openSSLAESencrypt(string $data, int $length, string $mode, string $key, string $iv, bool $encoded)``
 
-$data -> The data you want to encrypt.
+``$data`` -> The data you want to encrypt.
 
-$length -> The key length.
+``$length`` -> The key length.
 
-$mode -> The mode of operation.
+``$mode`` -> The mode of operation.
 
-$key -> The key (doesn't have to be provided)
+``$key`` -> The key (doesn't have to be provided)
 
-$iv -> The initialization vector (doesn't have to be provided)
+``$iv`` -> The initialization vector (doesn't have to be provided)
 
-$encoded -> The flag if the returning data should be base64 encoded (default is false)
+``$encoded`` -> The flag if the returning data should be base64 encoded (default is false)

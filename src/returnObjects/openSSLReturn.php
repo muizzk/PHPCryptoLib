@@ -18,7 +18,7 @@ class openSSLReturn implements openSSLReturnInterface
         $this->key = $key;
         $this->iv = $iv;
         $this->algorithm = $algorithm;
-		$this->encoded = $encoded;
+	$this->encoded = $encoded;
     }
 
     public function getData(): string {

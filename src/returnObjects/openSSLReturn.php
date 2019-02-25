@@ -10,7 +10,7 @@ class openSSLReturn implements openSSLReturnInterface
     public $key;
     public $iv;
     public $algorithm;
-	public $encoded;
+    public $encoded;
 
     function __construct(string $data, string $key, string $iv, string $algorithm, bool $encoded)
     {
@@ -37,8 +37,8 @@ class openSSLReturn implements openSSLReturnInterface
         return $this->algorithm;
     }
 	
-	public function getEncoded(): bool {
-		return $this->encoded;
-	}
+    public function getEncoded(): bool {
+	return $this->encoded;
+    }
 
 }

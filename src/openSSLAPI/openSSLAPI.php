@@ -7,6 +7,8 @@ use LLJVCS\PHPCryptoLib\returnObjects\openSSLAESReturn\openSSLReturn;
 
 class openSSLAPI implements openSSLAPIInterface
 {
+    
+    private $encoded;
 
     /**
      * openSSLAPI constructor.
@@ -17,6 +19,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$this->checkopenSSLenabled()) {
                 throw new PHPCryptoAPIException();
             }
+            $this->encoded = false;
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die('openSSL extension is not enabled!');
         }
@@ -31,6 +34,22 @@ class openSSLAPI implements openSSLAPIInterface
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    
+    public function getEncoded(): bool {
+        return $this->encoded;
+    }
+
+    /**
+     * @param bool $encoded
+     */
+    
+    public function setEncoded(bool $encoded): void {
+        $this->encoded = $encoded;
     }
 
     /**
@@ -57,10 +76,9 @@ class openSSLAPI implements openSSLAPIInterface
      * @param string $mode
      * @param string|null $key
      * @param string|null $iv
-     * @param bool $encode
      * @return object
      */
-    public function openSSLAESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLAESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null): object {
         try {
             $algorithm = "AES-" . (string)$length . "-" . strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -75,10 +93,10 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encode) {
+            if ($this->encoded) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -103,7 +121,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -115,11 +133,11 @@ class openSSLAPI implements openSSLAPIInterface
      * @param int $length
      * @param string|null $key
      * @param string|null $iv
-     * @param bool|false $encode
+     * @param bool|false $this->encoded
      * @return object
      */
 
-    public function openSSLBFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLBFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null): object {
         try {
             if ($length < 32 || $length > 448) {
                 throw new PHPCryptoAPIException('Invalid Key Size '.(string)$length);
@@ -137,10 +155,10 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encode) {
+            if ($this->encoded) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -166,7 +184,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -178,11 +196,11 @@ class openSSLAPI implements openSSLAPIInterface
      * @param int $length
      * @param string|null $key
      * @param string|null $iv
-     * @param bool $encode
+     * @param bool $this->encoded
      * @return object
      */
 
-    public function openSSLCast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLCast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null): object {
         try {
             $algorithm = 'CAST5-'.strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -200,10 +218,10 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encode) {
+            if ($this->encoded) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -229,7 +247,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -240,11 +258,11 @@ class openSSLAPI implements openSSLAPIInterface
      * @param string $mode
      * @param string|null $key
      * @param string|null $iv
-     * @param bool $encode
+     * @param bool $this->encoded
      * @return object
      */
 
-    public function openSSLIDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null, bool $encode=false): object {
+    public function openSSLIDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null): object {
         try {
             $length = 128;
             $algorithm = 'IDEA-'.strtoupper($mode);
@@ -260,10 +278,10 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            if ($encode) {
+            if ($this->encoded) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -288,7 +306,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $this->encoded);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }

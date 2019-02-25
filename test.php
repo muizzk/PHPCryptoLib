@@ -8,19 +8,19 @@ $api = new openSSLAPI();
 
 $api->setEncoded(true);
 
-$cipher = $api->openSSLAESencrypt('Hello World!', 'CBC', 256);
+$cipher = $api->openSSLAESencrypt('Hello World!');
 
 echo "AES: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLBFencrypt('Hello World!', 'CBC', 448);
+$cipher = $api->openSSLBFencrypt('Hello World!');
 
 echo "Blowfish: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLCast5encrypt('Hello World!', 'CBC', 128);
+$cipher = $api->openSSLCast5encrypt('Hello World!');
 
 echo "Cast5: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLIDEAencrypt('Hello World!', 'CBC');
+$cipher = $api->openSSLIDEAencrypt('Hello World!');
 
 echo "IDEA: ".$cipher->getData().PHP_EOL;
 

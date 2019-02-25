@@ -1,5 +1,7 @@
 # PHPCryptoLib
 
+![Github License](https://img.shields.io/badge/License-MIT-green.svg)
+
 **PHPCryptoLib is an API like library that simplifies the usage of PHP's cryptographic functions.**
 
 Example of openSSL AES 256 CBC encryption

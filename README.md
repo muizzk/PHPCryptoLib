@@ -10,9 +10,9 @@ use LLJVCS\PHPCryptoLib\openSSLAPI\openSSLAPI;
 
 $api = new openSSLAPI();
 
-$cipher = $api->openSSLAESencrypt('Hello World!', 256, 'CBC', null, null, true);
+$api->setEncoded(true);
+
+$cipher = $api->openSSLAESencrypt('Hello World!', 256, 'CBC', null, null);
 
 echo $cipher->getData();
 ```
-
-By setting the last parameter to true, the encrypted data gets ``base64_encode()`` encoded returned.

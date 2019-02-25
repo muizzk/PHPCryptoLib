@@ -17,7 +17,7 @@ $cipher = $api->openSSLAESencrypt('Hello World!');
 echo $cipher->getData();
 ```
 
-You will get a `openSSLReturn` object with the following methods:
+You will get an `openSSLReturn` object with the following methods:
 
 `getData(): string` -> returns the encrypted data.
 

@@ -78,7 +78,7 @@ class openSSLAPI implements openSSLAPIInterface
             if ($encode) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -103,7 +103,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -140,7 +140,7 @@ class openSSLAPI implements openSSLAPIInterface
             if ($encode) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -166,7 +166,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -203,7 +203,7 @@ class openSSLAPI implements openSSLAPIInterface
             if ($encode) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -229,7 +229,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -263,7 +263,7 @@ class openSSLAPI implements openSSLAPIInterface
             if ($encode) {
                 $cipher = base64_encode($cipher);
             }
-            return new openSSLReturn($cipher, $key, $iv, $algorithm);
+            return new openSSLReturn($cipher, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }
@@ -288,7 +288,7 @@ class openSSLAPI implements openSSLAPIInterface
             if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
-            return new openSSLReturn($clear, $key, $iv, $algorithm);
+            return new openSSLReturn($clear, $key, $iv, $algorithm, $encode);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }

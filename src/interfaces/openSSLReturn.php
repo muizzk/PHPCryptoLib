@@ -29,5 +29,11 @@ interface openSSLReturn
      */
 
     public function getAlgorithm(): string ;
+	
+	/**
+	 * @return bool
+	 */
+	 
+	 public function getEncoded(): bool ;
 
 }

@@ -10,8 +10,6 @@ $cipher = $api->openSSLAESencrypt('Hello World!', 'CBC', 256, null, null, true);
 
 echo "AES: ".$cipher->getData().PHP_EOL;
 
-echo "AES_DECRYPT: ".$api->openSSLAESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm()).PHP_EOL;
-
 $cipher = $api->openSSLBFencrypt('Hello World!', 'CBC', 448,null, null, true);
 
 echo "Blowfish: ".$cipher->getData().PHP_EOL;

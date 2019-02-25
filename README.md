@@ -4,7 +4,7 @@
 
 **PHPCryptoLib is an API like library that simplifies the usage of PHP's cryptographic functions.**
 
-Example of openSSL AES 256 CBC encryption
+Example of openSSL AES 256 CBC encryption and decryption
 ```php
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -17,8 +17,8 @@ $api->setEncoded(true);
 $cipher = $api->openSSLAESencrypt('Hello World!');
 
 echo $cipher->getData();
-```
 
+```
 You will get an `openSSLReturn` object with the following methods:
 
 `getData(): string` -> returns the encrypted data.
@@ -30,3 +30,10 @@ You will get an `openSSLReturn` object with the following methods:
 `getAlgorithm(): string` -> returns the encryption algorithm.
 
 `getEncoded(): bool` -> returns if the output is encoded (true/false)
+
+```php
+
+$cipher = $api->openSSLAESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+
+echo $cipher->getData(); //Output: Hello World!
+```

@@ -35,10 +35,11 @@ interface openSSLAPI
      * @param string $key
      * @param string $iv
      * @param string $algorithm
+     * @param bool $encoded
      * @return object
      */
 
-    public function openSSLAESdecrypt(string $data, string $key, string $iv, string $algorithm): object ;
+    public function openSSLAESdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -56,10 +57,11 @@ interface openSSLAPI
      * @param string $key
      * @param string $iv
      * @param string $algorithm
+     * @param bool $encoded
      * @return object
      */
 
-    public function openSSLBFdecrypt(string $data, string $key, string $iv, string $algorithm): object ;
+    public function openSSLBFdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -77,10 +79,11 @@ interface openSSLAPI
      * @param string $key
      * @param string $iv
      * @param string $algorithm
+     * @param bool $encoded
      * @return object
      */
 
-    public function openSSLCast5decrypt(string $data, string $key, string $iv, string $algorithm): object ;
+    public function openSSLCast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -97,9 +100,10 @@ interface openSSLAPI
      * @param string $key
      * @param string $iv
      * @param string $algorithm
+     * @param bool $encoded
      * @return object
      */
 
-    public function openSSLIDEAdecrypt(string $data, string $key, string $iv, string $algorithm): object ;
+    public function openSSLIDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
 }

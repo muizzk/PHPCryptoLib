@@ -10,13 +10,13 @@ interface opensslRSAKeyPair
      * @return string
      */
 
-    public function getPublicKey(): string ;
+    public function getPrivateKey(): string ;
 
     /**
      * @return string
      */
 
-    public function getPrivateKey(): string ;
+    public function getPublicKey(): string ;
 
     /**
      * @return int

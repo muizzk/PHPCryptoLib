@@ -39,3 +39,9 @@ echo "IDEA: ".$cipher->getData().PHP_EOL;
 $cipher = $api->IDEAdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo "IDEA_DECRYPT: ".$cipher->getData().PHP_EOL;
+
+$keyPair = $api->RSAKeyAPairGeneration();
+
+echo "Private Key: ".$keyPair->getPrivateKey().PHP_EOL;
+
+echo "Public Key: ".$keyPair->getPublicKey().PHP_EOL;

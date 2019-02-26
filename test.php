@@ -8,34 +8,34 @@ $api = new openSSLAPI();
 
 $api->setEncoded(true);
 
-$cipher = $api->openSSLAESencrypt('Hello World!');
+$cipher = $api->AESencrypt('Hello World!');
 
 echo "AES: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLAESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+$cipher = $api->AESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo "AES_DECRYPT: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLBFencrypt('Hello World!');
+$cipher = $api->BFencrypt('Hello World!');
 
 echo "Blowfish: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLBFdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+$cipher = $api->BFdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo "Blowfish_DECRYPT: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLCast5encrypt('Hello World!');
+$cipher = $api->Cast5encrypt('Hello World!');
 
 echo "Cast5: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLCast5decrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+$cipher = $api->Cast5decrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo "Cast5_DECRYPT: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLIDEAencrypt('Hello World!');
+$cipher = $api->IDEAencrypt('Hello World!');
 
 echo "IDEA: ".$cipher->getData().PHP_EOL;
 
-$cipher = $api->openSSLIDEAdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+$cipher = $api->IDEAdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo "IDEA_DECRYPT: ".$cipher->getData().PHP_EOL;

@@ -28,7 +28,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLAESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null): object ;
+    public function AESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null): object ;
 
     /**
      * @param string $data
@@ -39,7 +39,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLAESdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+    public function AESdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -50,7 +50,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLBFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null): object ;
+    public function BFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null): object ;
 
     /**
      * @param string $data
@@ -61,7 +61,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLBFdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+    public function BFdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -72,7 +72,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLCast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null): object ;
+    public function Cast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null): object ;
 
     /**
      * @param string $data
@@ -83,7 +83,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLCast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+    public function Cast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
      * @param $data
@@ -93,7 +93,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLIDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null): object ;
+    public function IDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null): object ;
 
     /**
      * @param string $data
@@ -104,6 +104,14 @@ interface openSSLAPI
      * @return object
      */
 
-    public function openSSLIDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+    public function IDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+
+    /**
+     * @param string $digestAlg
+     * @param int $keyLength
+     * @return object
+     */
+
+    public function RSAKeyAPairGeneration(string $digestAlg="sha512", int $keyLength=4096): object ;
 
 }

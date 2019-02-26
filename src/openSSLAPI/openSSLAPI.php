@@ -3,7 +3,8 @@
 namespace LLJVCS\PHPCryptoLib\openSSLAPI;
 use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\Interfaces\openSSLAPI as openSSLAPIInterface;
-use LLJVCS\PHPCryptoLib\returnObjects\openSSLAESReturn\openSSLReturn;
+use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;
+use LLJVCS\PHPCryptoLib\returnObjects\openSSLRSAKeyPairReturn;
 
 class openSSLAPI implements openSSLAPIInterface
 {
@@ -78,7 +79,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @param string|null $iv
      * @return object
      */
-    public function openSSLAESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null): object {
+    public function AESencrypt($data, string $mode='CBC', int $length=256, string $key=null, string $iv=null): object {
         try {
             $algorithm = "AES-" . (string)$length . "-" . strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -111,7 +112,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLAESdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+    public function AESdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
@@ -140,7 +141,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLBFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null): object {
+    public function BFencrypt($data, string $mode='CBC', int $length=448, string $key=null, string $iv=null): object {
         try {
             if ($length < 32 || $length > 448) {
                 throw new PHPCryptoAPIException('Invalid Key Size '.(string)$length);
@@ -176,7 +177,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLBFdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+    public function BFdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
@@ -206,7 +207,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLCast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null): object {
+    public function Cast5encrypt($data, string $mode='CBC', int $length=128, string $key=null, string $iv=null): object {
         try {
             $algorithm = 'CAST5-'.strtoupper($mode);
             if (!in_array($algorithm, openssl_get_cipher_methods())) {
@@ -242,7 +243,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLCast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+    public function Cast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
@@ -271,7 +272,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLIDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null): object {
+    public function IDEAencrypt($data, string $mode='CBC', string $key=null, string $iv=null): object {
         try {
             $length = 128;
             $algorithm = 'IDEA-'.strtoupper($mode);
@@ -305,7 +306,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function openSSLIDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+    public function IDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespace!');
@@ -320,6 +321,32 @@ class openSSLAPI implements openSSLAPIInterface
                 throw new PHPCryptoAPIException(openssl_error_string());
             }
             return new openSSLReturn($clear, $key, $iv, $algorithm, $this->encoded);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $digestAlg
+     * @param int $keyLength
+     * @return object
+     */
+
+    public function RSAKeyAPairGeneration(string $digestAlg = "sha512", int $keyLength = 4096): object {
+        try {
+            if (!in_array($keyLength, array(1024, 2048, 4096))) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)$keyLength);
+            }
+            $config = array(
+                "digest_alg" => $digestAlg,
+                "private_key_bits" => $keyLength,
+                "private_key_type" => OPENSSL_KEYTYPE_RSA
+            );
+            $res = openssl_pkey_new($config);
+            openssl_pkey_export($res, $privateKey);
+            $publicKey = openssl_pkey_get_details($res);
+            $publicKey = $publicKey["key"];
+            return new openSSLRSAKeyPairReturn($privateKey, $publicKey, $keyLength, $digestAlg);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }

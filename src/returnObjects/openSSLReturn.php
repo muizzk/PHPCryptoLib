@@ -1,16 +1,16 @@
 <?php
 
-namespace LLJVCS\PHPCryptoLib\returnObjects\openSSLAESReturn;
+namespace LLJVCS\PHPCryptoLib\returnObjects;
 use LLJVCS\PHPCryptoLib\Interfaces\openSSLReturn as openSSLReturnInterface;
 
 class openSSLReturn implements openSSLReturnInterface
 {
 
-    public $data;
-    public $key;
-    public $iv;
-    public $algorithm;
-    public $encoded;
+    private $data;
+    private $key;
+    private $iv;
+    private $algorithm;
+    private $encoded;
 
     function __construct(string $data, string $key, string $iv, string $algorithm, bool $encoded)
     {

@@ -38,7 +38,7 @@ class openSSLReturn implements openSSLReturnInterface
     }
 	
     public function getEncoded(): bool {
-	return $this->encoded;
+	    return $this->encoded;
     }
 
 }

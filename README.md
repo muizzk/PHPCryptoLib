@@ -14,7 +14,7 @@ $api = new openSSLAPI();
 
 $api->setEncoded(true);
 
-$cipher = $api->openSSLAESencrypt('Hello World!');
+$cipher = $api->AESencrypt('Hello World!');
 
 echo $cipher->getData();
 
@@ -32,7 +32,7 @@ You will get an `openSSLReturn` object with the following methods:
 `getEncoded(): bool` -> returns if the output is encoded (true/false)
 
 ```php
-$cipher = $api->openSSLAESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
+$cipher = $api->AESdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getIv(), $cipher->getAlgorithm(), $cipher->getEncoded());
 
 echo $cipher->getData(); //Output: Hello World!
 ```

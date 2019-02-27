@@ -124,6 +124,9 @@ class openSSLAPI implements openSSLAPIInterface
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
             }
+            if (explode("-", $algorithm)[1]/8 !== strlen($key)) {
+                throw new PHPCryptoAPIException('Invalid key length for algorithm!');
+            }
             $return->setKey($key);
             $return->setIv($iv);
             $return->setAlgorithm($algorithm);

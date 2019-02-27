@@ -40,7 +40,13 @@ $cipher = $api->IDEAdecrypt($cipher->getData(), $cipher->getKey(), $cipher->getI
 
 echo "IDEA_DECRYPT: ".$cipher->getData().PHP_EOL;
 
-$keyPair = $api->RSAKeyAPairGeneration();
+$keyPair = $api->RSAKeyPairGeneration();
+
+echo "Private Key: ".$keyPair->getPrivateKey().PHP_EOL;
+
+echo "Public Key: ".$keyPair->getPublicKey().PHP_EOL;
+
+$keyPair = $api->DSAKeyPairGeneration();
 
 echo "Private Key: ".$keyPair->getPrivateKey().PHP_EOL;
 

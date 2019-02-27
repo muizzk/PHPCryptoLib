@@ -112,6 +112,14 @@ interface openSSLAPI
      * @return object
      */
 
-    public function RSAKeyAPairGeneration(string $digestAlg="sha512", int $keyLength=4096): object ;
+    public function RSAKeyPairGeneration(string $digestAlg="sha512", int $keyLength=4096): object ;
+
+    /**
+     * @param string $digestAlg
+     * @param int $keyLength
+     * @return object
+     */
+
+    public function DSAKeyPairGeneration(string $digestAlg="sha512", int $keyLength=2048): object ;
 
 }

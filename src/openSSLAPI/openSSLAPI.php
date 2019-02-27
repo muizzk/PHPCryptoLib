@@ -3,6 +3,7 @@
 namespace LLJVCS\PHPCryptoLib\openSSLAPI;
 use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\Interfaces\openSSLAPI as openSSLAPIInterface;
+use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLRSAKeyPairReturn;
 
@@ -380,21 +381,55 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function RSAKeyAPairGeneration(string $digestAlg = "sha512", int $keyLength = 4096): object {
+    public function RSAKeyPairGeneration(string $digestAlg = "sha512", int $keyLength = 4096): object {
         try {
+            $return = new openSSLKeyPairReturn();
             if (!in_array($keyLength, array(1024, 2048, 4096))) {
                 throw new PHPCryptoAPIException('Invalid Key Size '.(string)$keyLength);
             }
+            $return->setKeyLength($keyLength);
             $config = array(
                 "digest_alg" => $digestAlg,
                 "private_key_bits" => $keyLength,
                 "private_key_type" => OPENSSL_KEYTYPE_RSA
             );
-            $res = openssl_pkey_new($config);
+            if (!$res = openssl_pkey_new($config)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            $return->setDigestAlg($digestAlg);
             openssl_pkey_export($res, $privateKey);
+            $return->setPrivateKey($privateKey);
             $publicKey = openssl_pkey_get_details($res);
             $publicKey = $publicKey["key"];
-            return new openSSLRSAKeyPairReturn($privateKey, $publicKey, $keyLength, $digestAlg);
+            $return->setPublicKey($publicKey);
+            return $return;
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    public function DSAKeyPairGeneration(string $digestAlg = "sha512", int $keyLength = 2048): object {
+        try {
+            $return = new openSSLKeyPairReturn();
+            if (!in_array($keyLength, array(1024, 2048, 4096))) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)$keyLength);
+            }
+            $return->setKeyLength($keyLength);
+            $config = array(
+                "digest_alg" => $digestAlg,
+                "private_key_bits" => $keyLength,
+                "private_key_type" => OPENSSL_KEYTYPE_DSA
+            );
+            if (!$res = openssl_pkey_new($config)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            $return->setDigestAlg($digestAlg);
+            openssl_pkey_export($res, $privateKey);
+            $return->setPrivateKey($privateKey);
+            $publicKey = openssl_pkey_get_details($res);
+            $publicKey = $publicKey["key"];
+            $return->setPublicKey($publicKey);
+            return $return;
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
         }

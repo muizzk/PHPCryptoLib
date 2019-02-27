@@ -5,7 +5,6 @@ use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\Interfaces\openSSLAPI as openSSLAPIInterface;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;
-use LLJVCS\PHPCryptoLib\returnObjects\openSSLRSAKeyPairReturn;
 
 class openSSLAPI implements openSSLAPIInterface
 {

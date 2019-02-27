@@ -130,7 +130,7 @@ class openSSLAPI implements openSSLAPIInterface
             $return->setKey($key);
             $return->setIv($iv);
             $return->setAlgorithm($algorithm);
-            $return->setEncoded(false);
+            $return->setEncoded($encoded);
             if (!in_array(strlen($key)*8, array(128, 192, 256))) {
                 throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
             }
@@ -211,7 +211,7 @@ class openSSLAPI implements openSSLAPIInterface
             $return->setKey($key);
             $return->setIv($iv);
             $return->setAlgorithm($algorithm);
-            $return->setEncoded(false);
+            $return->setEncoded($encoded);
             if ($encoded) {
                 $data = base64_decode($data);
             }
@@ -279,7 +279,7 @@ class openSSLAPI implements openSSLAPIInterface
     public function Cast5decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             $return = new openSSLReturn();
-            $return->setEncoded(false);
+            $return->setEncoded($encoded);
             $return->setAlgorithm($algorithm);
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespaces!');
@@ -354,7 +354,7 @@ class openSSLAPI implements openSSLAPIInterface
     public function IDEAdecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         try {
             $return = new openSSLReturn();
-            $return->setEncoded(false);
+            $return->setEncoded($encoded);
             if ($key === '' || ctype_space($key)) {
                 throw new PHPCryptoAPIException('Key can\'t be empty or whitespace!');
             }
@@ -374,6 +374,85 @@ class openSSLAPI implements openSSLAPIInterface
             return $return;
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
             die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param int $keyLength
+     * @param string $mode
+     * @param string|null $key
+     * @param string|null $iv
+     * @return object
+     */
+
+    public function Camelliaencrypt(string $data, int $keyLength = 256, string $mode = 'cbc', string $key = null, string $iv = null): object {
+        try {
+            $return = new openSSLReturn();
+            $return->setEncoded($this->encoded);
+            $algorithm = 'camellia-'.(string)$keyLength.'-'.$mode;
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm "'.$algorithm.'"');
+            }
+            $return->setAlgorithm($algorithm);
+            if (!$key) {
+                $key = $this->generateKey($keyLength);
+            }
+            $return->setKey($key);
+            if (!$iv) {
+                $iv = $this->generateIv($algorithm);
+            }
+            $return->setIv($iv);
+            if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            if ($this->encoded) {
+                $cipher = base64_encode($cipher);
+            }
+            $return->setData($cipher);
+            return $return;
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die('An error occurred in PHPCryptoLib! -> '.$PHPCryptoAPIException->getMessage());
+        }
+    }
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @param bool $encoded
+     * @return object
+     */
+
+    public function Camelliadecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+        try {
+            $return = new openSSLReturn();
+            $return->setEncoded($encoded);
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm '.$algorithm);
+            }
+            $return->setAlgorithm($algorithm);
+            if ($key === '' || ctype_space($key)) {
+                throw new PHPCryptoAPIException('Key can\'t be empty or whitespace!');
+            }
+            if (explode('-', $algorithm)[1]/8 !== strlen($key)) {
+                throw new PHPCryptoAPIException('Invalid Key Size '.(string)strlen($key));
+            }
+            $return->setKey($key);
+            if (strlen($iv) !== openssl_cipher_iv_length($algorithm)) {
+                throw new PHPCryptoAPIException('Invalid IV Size '.strlen($iv));
+            }
+            if ($encoded) {
+                $data = base64_decode($data);
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            $return->setData($clear);
+            return $return;
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            die("An error occurred in PHPCryptoLib! -> "-$PHPCryptoAPIException->getMessage());
         }
     }
 

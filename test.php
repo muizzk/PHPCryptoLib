@@ -9,10 +9,13 @@ $api = new openSSLAPI();
 
 $api->setEncoded(true);
 
-$cipherAES = $api->AESencrypt('Hello World!');
-$cipherBF = $api->BFencrypt('Hello World!');
-$cipherCast5 = $api->Cast5encrypt('Hello World!');
-$cipherIDEA = $api->IDEAencrypt('Hello World!');
+$originalMessage = 'Hello World!';
+
+$cipherAES = $api->AESencrypt($originalMessage);
+$cipherBF = $api->BFencrypt($originalMessage);
+$cipherCast5 = $api->Cast5encrypt($originalMessage);
+$cipherIDEA = $api->IDEAencrypt($originalMessage);
+$cipherCamellia = $api->Camelliaencrypt($originalMessage);
 
 if (php_sapi_name() === 'cli') {
     $table = new ConsoleTable();
@@ -20,7 +23,7 @@ if (php_sapi_name() === 'cli') {
         ->addHeader('Output')
         ->addRow()
         ->addColumn('Original Message')
-        ->addColumn('Hello World!')
+        ->addColumn($originalMessage)
         ->addRow()
         ->addColumn('AES Encrypt')
         ->addColumn($cipherAES->getData())
@@ -34,6 +37,9 @@ if (php_sapi_name() === 'cli') {
         ->addColumn('IDEA Encrypt')
         ->addColumn($cipherIDEA->getData())
         ->addRow()
+        ->addColumn('Camellia Encrypt')
+        ->addColumn($cipherCamellia->getData())
+        ->addRow()
         ->addColumn('AES Decrypt')
         ->addColumn($api->AESdecrypt($cipherAES->getData(), $cipherAES->getKey(), $cipherAES->getIv(), $cipherAES->getAlgorithm(), $cipherAES->getEncoded())->getData())
         ->addRow()
@@ -45,5 +51,8 @@ if (php_sapi_name() === 'cli') {
         ->addRow()
         ->addColumn('IDEA Decrypt')
         ->addColumn($api->IDEAdecrypt($cipherIDEA->getData(), $cipherIDEA->getKey(), $cipherIDEA->getIv(), $cipherIDEA->getAlgorithm(), $cipherIDEA->getEncoded())->getData())
+        ->addRow()
+        ->addColumn('Camellia Decrypt')
+        ->addColumn($api->Camelliadecrypt($cipherCamellia->getData(), $cipherCamellia->getKey(), $cipherCamellia->getIv(), $cipherCamellia->getAlgorithm(), $cipherCamellia->getEncoded())->getData())
         ->display();
 }

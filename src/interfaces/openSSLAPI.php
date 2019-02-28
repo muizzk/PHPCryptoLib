@@ -129,6 +129,28 @@ interface openSSLAPI
     public function Camelliadecrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
 
     /**
+     * @param string $data
+     * @param int $keyLength
+     * @param bool $poly1305
+     * @param string|null $key
+     * @param string|null $iv
+     * @return object
+     */
+
+    public function cachacha20encrypt(string $data, int $keyLength=256, bool $poly1305=false, string $key=null, string $iv=null): object ;
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @param bool $encoded
+     * @return object
+     */
+
+    public function chacha20decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object ;
+
+    /**
      * @param string $digestAlg
      * @param int $keyLength
      * @return object

@@ -16,6 +16,7 @@ $cipherBF = $api->BFencrypt($originalMessage);
 $cipherCast5 = $api->Cast5encrypt($originalMessage);
 $cipherIDEA = $api->IDEAencrypt($originalMessage);
 $cipherCamellia = $api->Camelliaencrypt($originalMessage);
+$cipherChacha20 = $api->cachacha20encrypt($originalMessage);
 
 if (php_sapi_name() === 'cli') {
     $table = new ConsoleTable();
@@ -40,6 +41,9 @@ if (php_sapi_name() === 'cli') {
         ->addColumn('Camellia Encrypt')
         ->addColumn($cipherCamellia->getData())
         ->addRow()
+        ->addColumn('Chacha20 Encrypt')
+        ->addColumn($cipherChacha20->getData())
+        ->addRow()
         ->addColumn('AES Decrypt')
         ->addColumn($api->AESdecrypt($cipherAES->getData(), $cipherAES->getKey(), $cipherAES->getIv(), $cipherAES->getAlgorithm(), $cipherAES->getEncoded())->getData())
         ->addRow()
@@ -54,5 +58,8 @@ if (php_sapi_name() === 'cli') {
         ->addRow()
         ->addColumn('Camellia Decrypt')
         ->addColumn($api->Camelliadecrypt($cipherCamellia->getData(), $cipherCamellia->getKey(), $cipherCamellia->getIv(), $cipherCamellia->getAlgorithm(), $cipherCamellia->getEncoded())->getData())
+        ->addRow()
+        ->addColumn('Chacha20 Decrypt')
+        ->addColumn($api->chacha20decrypt($cipherChacha20->getData(), $cipherChacha20->getKey(), $cipherChacha20->getIv(), $cipherChacha20->getAlgorithm(), $cipherChacha20->getEncoded())->getData())
         ->display();
 }

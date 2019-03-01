@@ -6,6 +6,8 @@
 
 *PHPCryptoLib is only tested against PHP 7.1 and 7.2!*
 
+*This library is still in development. Support for more algorithms will be implemented!*
+
 #### Supported algorithms so far:
 
 - AES
@@ -51,3 +53,5 @@ As seen in the example, this object has 5 methods:
 `getAlgorithm(): string` returns the exact algorithm used
 
 `getEncoded(): bool` returns if the output is encoded
+
+Bugs, questions and suggestions please at: llj.vcs@web.de

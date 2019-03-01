@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\openSSLAPI\openSSLAPI;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;

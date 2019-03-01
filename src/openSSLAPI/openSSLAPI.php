@@ -37,8 +37,8 @@ class openSSLAPI implements openSSLAPIInterface
         return true;
     }
 
-    private function throwException(PHPCryptoAPIException $PHPCryptoAPIException): bool {
-        die("An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage().' in '.$PHPCryptoAPIException->getTraceAsString());
+    private function throwException(PHPCryptoAPIException $PHPCryptoAPIException): string {
+        return "An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage().' in '.$PHPCryptoAPIException->getTraceAsString();
     }
 
     /**
@@ -540,7 +540,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function RSAKeyPairGeneration(string $digestAlg = "sha512", int $keyLength = 4096): object {
+    public function RSAKeyPairGeneration(string $digestAlg = "sha512", int $keyLength = 2048): object {
         $return = new openSSLKeyPairReturn();
         try {
             if (!in_array($keyLength, array(1024, 2048, 4096))) {

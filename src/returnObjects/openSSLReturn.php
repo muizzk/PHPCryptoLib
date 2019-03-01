@@ -26,7 +26,8 @@ class openSSLReturn implements openSSLReturnInterface
         $this->data = $data;
     }
 
-    public function getData(): string {
+    public function getData(): string
+    {
         return $this->data;
     }
 
@@ -35,7 +36,8 @@ class openSSLReturn implements openSSLReturnInterface
         $this->key = $key;
     }
 
-    public function getKey(): string {
+    public function getKey(): string
+    {
         return $this->key;
     }
 
@@ -44,7 +46,8 @@ class openSSLReturn implements openSSLReturnInterface
         $this->iv = $iv;
     }
 
-    public function getIv(): string {
+    public function getIv(): string
+    {
         return $this->iv;
     }
 
@@ -53,7 +56,8 @@ class openSSLReturn implements openSSLReturnInterface
         $this->algorithm = $algorithm;
     }
 
-    public function getAlgorithm(): string {
+    public function getAlgorithm(): string
+    {
         return $this->algorithm;
     }
 
@@ -62,7 +66,8 @@ class openSSLReturn implements openSSLReturnInterface
         $this->encoded = $encoded;
     }
 
-    public function getEncoded(): bool {
+    public function getEncoded(): bool
+    {
 	    return $this->encoded;
     }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="./vendor/autoload.php">
+    <testsuites>
+        <testsuite name="PHPCryptoLib - Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/openSSLAPI/</directory>
+            <file>./src/openSSLAPI/openSSLAPI.php</file>
+            <exclude>
+                <file>./test.php</file>
+                <file>./src/PHPCryptoAPIException.php</file>
+                <directory>./src/interfaces/</directory>
+                <directory>./src/returnObjects/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

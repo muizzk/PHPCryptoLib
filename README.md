@@ -4,7 +4,7 @@
 
 **PHPCryptoLib is an API like library that simplifies the usage of PHP's cryptographic functions.**
 
-*PHPCryptoLib is only tested against PHP 7.1 and 7.2!*
+*PHPCryptoLib is only tested against PHP 7.2 and 7.3!*
 
 *This library is still in development. Support for more algorithms will be implemented!*
 

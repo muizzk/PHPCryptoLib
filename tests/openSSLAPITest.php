@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\openSSLAPI\openSSLAPI;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLError;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
@@ -88,7 +87,11 @@ final class openSSLAPITest extends TestCase
     }
 
     public function testIDEAEncryptReturnType(): void {
-        $this->assertSame(openSSLReturn::class, get_class($this->api->IDEAencrypt($this->originalMessage)));
+        $object = $this->api->IDEAencrypt($this->originalMessage);
+        $this->assertSame(openSSLReturn::class, get_class($object));
+        if (get_class($object) === 'openSSLError') {
+            echo $object->getMessage;
+        }
     }
 
     public function testIDEADecryptReturnType(): void {
@@ -106,7 +109,11 @@ final class openSSLAPITest extends TestCase
     }
 
     public function testChacha20EncryptReturnType(): void {
-        $this->assertSame(openSSLReturn::class, get_class($this->api->chacha20encrypt($this->originalMessage)));
+        $object = $this->api->chacha20encrypt($this->originalMessage);
+        $this->assertSame(openSSLReturn::class, get_class($object));
+        if (get_class($object) === 'openSSLError') {
+            echo $object->getMessage();
+        }
     }
 
     public function testChacha20DecryptReturnType(): void {

@@ -2,6 +2,7 @@
 
 ![Github License](https://img.shields.io/badge/License-MIT-green.svg)
 [![Build Status](https://travis-ci.org/llj-vcs/PHPCryptoLib.svg?branch=master)](https://travis-ci.org/llj-vcs/PHPCryptoLib)
+<!--[![codecov](https://codecov.io/gh/llj-vcs/PHPCryptoLib/branch/master/graph/badge.svg)](https://codecov.io/gh/llj-vcs/PHPCryptoLib)-->
 
 **PHPCryptoLib is an API like library that simplifies the usage of PHP's cryptographic functions.**
 

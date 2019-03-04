@@ -113,4 +113,12 @@ final class openSSLAPITest extends TestCase
         $this->assertSame(openSSLReturn::class, get_class($this->api->chacha20decrypt($object->getData(), $object->getKey(), $object->getIv(), $object->getAlgorithm(), $object->getEncoded())));
     }
 
+    public function testRSAKeyPairGenerationReturnType(): void {
+        $this->assertSame(openSSLKeyPairReturn::class, get_class($this->api->RSAKeyPairGeneration()));
+    }
+
+    public function testDSAKeyPairGenerationReturnType(): void {
+        $this->assertSame(openSSLKeyPairReturn::class, get_class($this->api->DSAKeyPairGeneration()));
+    }
+
 }

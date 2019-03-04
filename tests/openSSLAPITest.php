@@ -88,9 +88,9 @@ final class openSSLAPITest extends TestCase
 
     public function testIDEAEncryptReturnType(): void {
         $object = $this->api->IDEAencrypt($this->originalMessage);
-        $this->assertSame(openSSLReturn::class, get_class($object));
+        $this->assertSame(openSSLError::class, get_class($object));
         if (get_class($object) === 'openSSLError') {
-            echo $object->getMessage;
+            echo $object->getMessage();
         }
     }
 
@@ -110,7 +110,7 @@ final class openSSLAPITest extends TestCase
 
     public function testChacha20EncryptReturnType(): void {
         $object = $this->api->chacha20encrypt($this->originalMessage);
-        $this->assertSame(openSSLReturn::class, get_class($object));
+        $this->assertSame(openSSLError::class, get_class($object));
         if (get_class($object) === 'openSSLError') {
             echo $object->getMessage();
         }

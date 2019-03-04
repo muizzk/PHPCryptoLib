@@ -18,24 +18,30 @@ class openSSLAPI implements openSSLAPIInterface
     public function __construct() {
         try {
             if (!$this->checkopenSSLenabled()) {
-                throw new PHPCryptoAPIException();
+                throw new PHPCryptoAPIException('PHPCryptoLib: openSSL extension is not enabled!');
             }
             $this->encoded = false;
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            die('openSSL extension is not enabled!');
+            $this->throwException($PHPCryptoAPIException);
         }
     }
 
     /**
+     * @param bool $test
      * @return bool
      */
 
-    public function checkopenSSLenabled(): bool {
-        if (!extension_loaded('openssl')) {
+    public function checkopenSSLenabled(bool $test=false): bool {
+        if (!extension_loaded('openssl') || $test) {
             return false;
         }
         return true;
     }
+
+    /**
+     * @param PHPCryptoAPIException $PHPCryptoAPIException
+     * @return string
+     */
 
     private function throwException(PHPCryptoAPIException $PHPCryptoAPIException): string {
         return "An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage().' in '.$PHPCryptoAPIException->getTraceAsString();

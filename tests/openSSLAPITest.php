@@ -29,6 +29,10 @@ final class openSSLAPITest extends TestCase
         $this->assertTrue($this->api->checkopenSSLenabled());
     }
 
+    public function testopenSSLEnabledFalse(): void {
+        $this->assertFalse($this->api->checkopenSSLenabled(true));
+    }
+
     public function testEncodedTrue(): void {
         $this->api->setEncoded(true);
         $this->assertTrue($this->api->getEncoded());

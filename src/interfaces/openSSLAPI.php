@@ -137,7 +137,7 @@ interface openSSLAPI
      * @return object
      */
 
-    public function cachacha20encrypt(string $data, int $keyLength=256, bool $poly1305=false, string $key=null, string $iv=null): object ;
+    public function chacha20encrypt(string $data, int $keyLength=256, bool $poly1305=false, string $key=null, string $iv=null): object ;
 
     /**
      * @param string $data

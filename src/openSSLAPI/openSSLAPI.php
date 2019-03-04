@@ -469,7 +469,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function cachacha20encrypt(string $data, int $keyLength=256, bool $poly1305 = false, string $key = null, string $iv = null): object {
+    public function chacha20encrypt(string $data, int $keyLength=256, bool $poly1305 = false, string $key = null, string $iv = null): object {
         $return = new openSSLReturn();
         try {
             $return->setEncoded($this->encoded);
@@ -504,6 +504,15 @@ class openSSLAPI implements openSSLAPIInterface
         }
         return $return;
     }
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @param bool $encoded
+     * @return object
+     */
 
     public function chacha20decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         $return = new openSSLReturn();

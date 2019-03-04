@@ -16,7 +16,7 @@ $cipherBF = $api->BFencrypt($originalMessage);
 $cipherCast5 = $api->Cast5encrypt($originalMessage);
 $cipherIDEA = $api->IDEAencrypt($originalMessage);
 $cipherCamellia = $api->Camelliaencrypt($originalMessage);
-$cipherChacha20 = $api->cachacha20encrypt($originalMessage);
+$cipherChacha20 = $api->chacha20encrypt($originalMessage);
 
 if (php_sapi_name() === 'cli') {
     $table = new ConsoleTable();

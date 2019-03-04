@@ -3,6 +3,7 @@
 namespace LLJVCS\PHPCryptoLib\openSSLAPI;
 use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\Interfaces\openSSLAPI as openSSLAPIInterface;
+use LLJVCS\PHPCryptoLib\returnObjects\openSSLError;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;
 
@@ -40,11 +41,12 @@ class openSSLAPI implements openSSLAPIInterface
 
     /**
      * @param PHPCryptoAPIException $PHPCryptoAPIException
-     * @return string
+     * @return object
      */
 
-    private function throwException(PHPCryptoAPIException $PHPCryptoAPIException): string {
-        return "An error occurred in PHPCryptoLib! -> ".$PHPCryptoAPIException->getMessage().' in '.$PHPCryptoAPIException->getTraceAsString();
+    private function throwException(PHPCryptoAPIException $PHPCryptoAPIException): object {
+        //echo 'openSSLError returned instead of openSSLReturn in '.$PHPCryptoAPIException->getTraceAsString().'!';
+        return new openSSLError($PHPCryptoAPIException->getMessage(), $PHPCryptoAPIException->getCode(), $PHPCryptoAPIException->getTraceAsString());
     }
 
     /**
@@ -114,7 +116,7 @@ class openSSLAPI implements openSSLAPIInterface
             $return->setEncoded($this->encoded);
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -152,7 +154,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -194,7 +196,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -230,7 +232,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -272,7 +274,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -308,7 +310,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -347,7 +349,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -382,7 +384,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -421,7 +423,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -461,7 +463,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -506,7 +508,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($cipher);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }
@@ -544,7 +546,7 @@ class openSSLAPI implements openSSLAPIInterface
             }
             $return->setData($clear);
         } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
-            $this->throwException($PHPCryptoAPIException);
+            $return = $this->throwException($PHPCryptoAPIException);
         }
         return $return;
     }

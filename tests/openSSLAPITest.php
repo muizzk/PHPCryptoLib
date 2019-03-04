@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use LLJVCS\PHPCryptoLib\PHPCryptoAPIException;
 use LLJVCS\PHPCryptoLib\openSSLAPI\openSSLAPI;
+use LLJVCS\PHPCryptoLib\returnObjects\openSSLError;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLKeyPairReturn;
 use LLJVCS\PHPCryptoLib\returnObjects\openSSLReturn;
 use PHPUnit\Framework\TestCase;
@@ -119,6 +120,10 @@ final class openSSLAPITest extends TestCase
 
     public function testDSAKeyPairGenerationReturnType(): void {
         $this->assertSame(openSSLKeyPairReturn::class, get_class($this->api->DSAKeyPairGeneration()));
+    }
+
+    public function testAESEncryptUnknownAlgorithmReturn(): void {
+        $this->assertSame(openSSLError::class, get_class($this->api->AESencrypt($this->originalMessage, 'ABC', 4096)));
     }
 
 }

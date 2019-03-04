@@ -21,6 +21,14 @@ final class openSSLAPITest extends TestCase
         $this->originalMessage = 'Hello World!';
     }
 
+    public function testCheckopenSSLAPIClassType(): void {
+        $this->assertSame(openSSLAPI::class, get_class(new openSSLAPI()));
+    }
+
+    public function testopenSSLEnabled(): void {
+        $this->assertTrue($this->api->checkopenSSLenabled());
+    }
+
     public function testEncodedTrue(): void {
         $this->api->setEncoded(true);
         $this->assertTrue($this->api->getEncoded());

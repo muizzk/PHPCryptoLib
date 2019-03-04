@@ -30,7 +30,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return bool
      */
 
-    private function checkopenSSLenabled(): bool {
+    public function checkopenSSLenabled(): bool {
         if (!extension_loaded('openssl')) {
             return false;
         }

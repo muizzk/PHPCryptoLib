@@ -17,6 +17,7 @@ $cipherCast5 = $api->Cast5encrypt($originalMessage);
 $cipherIDEA = $api->IDEAencrypt($originalMessage);
 $cipherCamellia = $api->Camelliaencrypt($originalMessage);
 $cipherChacha20 = $api->chacha20encrypt($originalMessage);
+$cipherDesede3 = $api->DESEDE3encrypt($originalMessage);
 
 if (php_sapi_name() === 'cli') {
     $table = new ConsoleTable();
@@ -44,6 +45,9 @@ if (php_sapi_name() === 'cli') {
         ->addColumn('Chacha20 Encrypt')
         ->addColumn($cipherChacha20->getData())
         ->addRow()
+        ->addColumn('DES-EDE3 Encrypt')
+        ->addColumn($cipherDesede3->getData())
+        ->addRow()
         ->addColumn('AES Decrypt')
         ->addColumn($api->AESdecrypt($cipherAES->getData(), $cipherAES->getKey(), $cipherAES->getIv(), $cipherAES->getAlgorithm(), $cipherAES->getEncoded())->getData())
         ->addRow()
@@ -61,5 +65,8 @@ if (php_sapi_name() === 'cli') {
         ->addRow()
         ->addColumn('Chacha20 Decrypt')
         ->addColumn($api->chacha20decrypt($cipherChacha20->getData(), $cipherChacha20->getKey(), $cipherChacha20->getIv(), $cipherChacha20->getAlgorithm(), $cipherChacha20->getEncoded())->getData())
+        ->addRow()
+        ->addColumn('DES-EDE3 Decrypt')
+        ->addColumn($api->DESEDE3decrypt($cipherDesede3->getData(), $cipherDesede3->getKey(), $cipherDesede3->getiv(), $cipherDesede3->getAlgorithm(), $cipherDesede3->getEncoded())->getData())
         ->display();
 }

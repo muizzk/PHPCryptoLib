@@ -18,6 +18,7 @@
 - IDEA
 - Camellia
 - Chacha20
+- DES-EDE3
 - RSA (key pair generation)
 - DSA (key pair generation)
 
@@ -55,5 +56,7 @@ As seen in the example, this object has 5 methods:
 `getAlgorithm(): string` returns the exact algorithm used
 
 `getEncoded(): bool` returns if the output is encoded
+
+***Note:*** *Support for normal DES will not be implemented for now since this algorithm should not be used anyway.*
 
 Bugs, questions and suggestions please at: llj.vcs@web.de

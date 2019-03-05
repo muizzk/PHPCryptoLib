@@ -477,7 +477,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function chacha20encrypt(string $data, int $keyLength=256, bool $poly1305 = false, string $key = null, string $iv = null): object {
+    public function Chacha20encrypt(string $data, int $keyLength=256, bool $poly1305 = false, string $key = null, string $iv = null): object {
         $return = new openSSLReturn();
         try {
             $return->setEncoded($this->encoded);
@@ -522,7 +522,7 @@ class openSSLAPI implements openSSLAPIInterface
      * @return object
      */
 
-    public function chacha20decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
+    public function Chacha20decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object {
         $return = new openSSLReturn();
         try {
             $return->setEncoded($encoded);
@@ -538,6 +538,96 @@ class openSSLAPI implements openSSLAPIInterface
             if (strlen($iv) !== openssl_cipher_iv_length($algorithm)) {
                 throw new PHPCryptoAPIException('Invalid IV Size '.(string)strlen($iv));
             }
+            $return->setIv($iv);
+            if ($encoded) {
+                $data = base64_decode($data);
+            }
+            if (!$clear = openssl_decrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            $return->setData($clear);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            $return = $this->throwException($PHPCryptoAPIException);
+        }
+        return $return;
+    }
+
+    /**
+     * @param string $data
+     * @param string $mode
+     * @param int $keyLength
+     * @param string|null $key
+     * @param string|null $iv
+     * @return object
+     */
+
+    public function DESEDE3encrypt(string $data, string $mode = "CBC", int $keyLength = 168, string $key = null, string $iv = null): object
+    {
+        $return = new openSSLReturn();
+        try {
+            $return->setEncoded($this->encoded);
+            $algorithm = "DES-EDE3-".strtoupper($mode);
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm '.$algorithm);
+            }
+            $return->setAlgorithm($algorithm);
+            if (!in_array($keyLength, [56, 112, 168])) {
+                throw new PHPCryptoAPIException('Invalid key size '.(string)$keyLength);
+            }
+            if ($key && !in_array(strlen($key), [56, 112, 168])) {
+                throw new PHPCryptoAPIException('Key size doesn\'t match');
+            }
+            if (!$key) {
+                $key = $this->generateKey($keyLength);
+            }
+            $return->setKey($key);
+            if ($iv && $iv !== openssl_cipher_iv_length($algorithm)) {
+                throw new PHPCryptoAPIException('Invalid IV size');
+            }
+            if (!$iv) {
+                $iv = $this->generateIv($algorithm);
+            }
+            $return->setIv($iv);
+            if (!$cipher = openssl_encrypt($data, $algorithm, $key, $options=OPENSSL_RAW_DATA, $iv)) {
+                throw new PHPCryptoAPIException(openssl_error_string());
+            }
+            if ($this->encoded) {
+                $cipher = base64_encode($cipher);
+            }
+            $return->setData($cipher);
+        } catch (PHPCryptoAPIException $PHPCryptoAPIException) {
+            $return = $this->throwException($PHPCryptoAPIException);
+        }
+        return $return;
+    }
+
+    /**
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @param string $algorithm
+     * @param bool $encoded
+     * @return object
+     */
+
+    public function DESEDE3decrypt(string $data, string $key, string $iv, string $algorithm, bool $encoded): object
+    {
+        $return = new openSSLReturn();
+        try {
+            $return->setEncoded($encoded);
+            if (!in_array($algorithm, openssl_get_cipher_methods())) {
+                throw new PHPCryptoAPIException('Unknown algorithm '.$algorithm);
+            }
+            $return->setAlgorithm($algorithm);
+            $keyLength = strlen($key);
+            if (!in_array($keyLength, [7, 14, 21])) {
+                throw new PHPCryptoAPIException('Invalid key size '.(string)$keyLength);
+            }
+            $return->setKey($key);
+            if (strlen($iv) !== openssl_cipher_iv_length($algorithm)) {
+                throw new PHPCryptoAPIException('Invalid IV size '.(string)$iv);
+            }
+            $return->setIv($iv);
             if ($encoded) {
                 $data = base64_decode($data);
             }

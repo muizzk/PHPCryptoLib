@@ -87,11 +87,7 @@ final class openSSLAPITest extends TestCase
     }
 
     public function testIDEAEncryptReturnType(): void {
-        $object = $this->api->IDEAencrypt($this->originalMessage);
-        $this->assertSame(openSSLError::class, get_class($object));
-        if (get_class($object) === 'openSSLError') {
-            echo $object->getMessage();
-        }
+        $this->assertSame(openSSLReturn::class, get_class($this->api->IDEAencrypt($this->originalMessage)));
     }
 
     public function testIDEADecryptReturnType(): void {
@@ -109,16 +105,21 @@ final class openSSLAPITest extends TestCase
     }
 
     public function testChacha20EncryptReturnType(): void {
-        $object = $this->api->chacha20encrypt($this->originalMessage);
-        $this->assertSame(openSSLError::class, get_class($object));
-        if (get_class($object) === 'openSSLError') {
-            echo $object->getMessage();
-        }
+        $this->assertSame(openSSLReturn::class, get_class($this->api->chacha20encrypt($this->originalMessage)));
     }
 
     public function testChacha20DecryptReturnType(): void {
         $object = $this->api->chacha20encrypt($this->originalMessage);
         $this->assertSame(openSSLReturn::class, get_class($this->api->chacha20decrypt($object->getData(), $object->getKey(), $object->getIv(), $object->getAlgorithm(), $object->getEncoded())));
+    }
+
+    public function testDESEDE3EncryptReturnType(): void {
+        $this->assertSame(openSSLReturn::class, get_class($this->api->DESEDE3encrypt($this->originalMessage)));
+    }
+
+    public function testDESEDE3DecryptReturnType(): void {
+        $object = $this->api->DESEDE3encrypt($this->originalMessage);
+        $this->assertSame(openSSLReturn::class, get_class($this->api->DESEDE3decrypt($object->getData(), $object->getKey(), $object->getIv(), $object->getAlgorithm(), $object->getEncoded())));
     }
 
     public function testRSAKeyPairGenerationReturnType(): void {

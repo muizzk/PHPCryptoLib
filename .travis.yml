@@ -8,6 +8,6 @@ before_script:
 install:
   - composer require phpunit/phpunit ^8
 script:
-  - phpunit --configuration phpunit.xml.dist --coverage-clover=coverage.xml
+  - phpunit -v --configuration phpunit.xml.dist --coverage-clover=coverage.xml
 after_success:
   - bash <(curl -s https://codecov.io/bash)
